@@ -1,7 +1,6 @@
 package com.apartment.management.config;
 
 import com.apartment.management.model.User;
-import com.apartment.management.model.UserRole;
 import com.apartment.management.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class DataInitializer implements CommandLineRunner {
                     .name("박준")
                     .email("jun@apartment.com")
                     .phoneNumber("01012345678")
-                    .role(UserRole.ADMIN)
+                    .role(User.UserRole.ADMIN)
                     .enabled(true)
                     .build();
 
