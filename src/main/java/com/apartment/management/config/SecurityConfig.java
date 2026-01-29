@@ -34,8 +34,8 @@ public class SecurityConfig {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    @Value("${cors.allowed-origins:http://localhost:3000}")
-    private String[] allowedOrigins;
+    @Value("${cors.allowed-origins:http://localhost:3000,https://*.netlify.app}")
+    private String allowedOriginsString;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -76,10 +76,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList(allowedOrigins));
+        // 환경변수에서 쉼표로 구분된 origin 파싱
+        String[] origins = allowedOriginsString.split(",");
+        configuration.setAllowedOriginPatterns(Arrays.asList(origins));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
